@@ -1,0 +1,138 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+[RequireComponent(typeof(Collider2D))]
+public class Cell : MonoBehaviour
+{
+
+    public bool IsMined { get; private set; }
+
+    public bool IsFlagged { get; private set; }
+
+    public bool IsClosed { get; private set; }
+
+    public int MinesAroundCount { get; private set; } = 0;
+
+    private List<Cell> _neighbours = new List<Cell>();
+
+    public event Action<Cell> OnCellClicked;
+    public event Action Exploded;
+    public event Action Empted;
+    public event Action<bool> Flagged;
+    public event Action<int> Opened;
+
+    private void Awake()
+    {
+        IsClosed = true;
+        IsFlagged = false;
+    }
+
+    public void PlaceMine()
+    {
+        IsMined = true;
+    }
+
+    public void SetNeighbours(List<Cell> neighbours)
+    {
+        _neighbours = neighbours;
+
+        MinesAroundCount = 0;
+
+        foreach (Cell cell in _neighbours)
+        {
+            if (cell.IsMined)
+                MinesAroundCount++;
+        }
+    }
+
+    public void ToggleFlag()
+    {
+        if (IsClosed == false)
+            return;
+
+        IsFlagged = !IsFlagged;
+
+        Flagged?.Invoke(IsFlagged);
+    }
+
+    public void Open()
+    {
+        if (IsClosed == false || IsFlagged)
+            return;
+
+        Queue<Cell> queue = new Queue<Cell>();
+        queue.Enqueue(this);
+
+        while (queue.Count > 0)
+        {
+            Cell current = queue.Dequeue();
+
+            if (!current.IsClosed)
+                continue;
+
+            current.IsClosed = false;
+            current.OnCellClicked?.Invoke(current);
+
+            if (current.IsMined)
+            {
+                current.Exploded?.Invoke();
+                continue;
+            }
+
+            if (current.MinesAroundCount == 0)
+            {
+                current.Empted?.Invoke();
+
+                foreach (Cell neighbour in current._neighbours)
+                    if (neighbour.IsClosed && neighbour.IsFlagged == false)
+                        queue.Enqueue(neighbour);
+            }
+            else
+            {
+                current.Opened?.Invoke(current.MinesAroundCount);
+            }
+        }
+
+    }
+
+    public void OpenAround()
+    {
+        if (IsClosed || MinesAroundCount == 0)
+            return;
+
+        int flaggedCount = 0;
+
+        foreach (var neighbour in _neighbours)
+            if (neighbour.IsFlagged)
+                flaggedCount++;
+
+        if (flaggedCount == MinesAroundCount)
+        {
+            foreach (var neighbour in _neighbours)
+                neighbour.Open();
+        }
+    }
+
+    public void NotifyClicked()
+    {
+        OnCellClicked?.Invoke(this);
+    }
+
+    public void Exit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+
+        Vector3 scale = Vector3.one * 0.9f;
+        Gizmos.DrawWireCube(transform.position, scale);
+    }
+}
