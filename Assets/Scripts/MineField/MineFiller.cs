@@ -1,23 +1,34 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MineFiller : MonoBehaviour
 {
     [SerializeField, Range(0f, 1f)] private float _mineChance = 0.15f;
+    [SerializeField] private float _assignCount = 1000f;
 
     private float _currentChance = 0f;
+    private float _currentAssignCount = 0f;
 
-    public void FillMines(List<Cell> cells)
+    private void Awake()
     {
-        foreach (var cell in cells)
+        _currentAssignCount = _assignCount;
+    }
+
+    public void FillMines(Cell cell)
+    {
+        _currentAssignCount--;
+
+        if (_currentAssignCount <= 0)
         {
-            if (Random.value < _currentChance)
-                cell.PlaceMine();
-
-            _currentChance += 0.0005f;
-
-            if (_currentChance > _mineChance)
-                _currentChance = _mineChance;
+            _mineChance += 0.01f;
+            _currentAssignCount = _assignCount;
         }
+
+        if (Random.value < _currentChance)
+            cell.PlaceMine();
+
+        _currentChance += 0.0005f;
+
+        if (_currentChance > _mineChance)
+            _currentChance = _mineChance;
     }
 }

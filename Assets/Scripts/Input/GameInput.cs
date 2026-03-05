@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayInput : MonoBehaviour
+public class GameInput : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
     [SerializeField] private CameraDragHandler _cameraDrag;

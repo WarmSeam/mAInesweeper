@@ -312,6 +312,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _camera: {fileID: 519420031}
   _dragSpeed: 1
+  _zoomSpeed: 5
+  _minZoom: 5
+  _maxZoom: 50
 --- !u!1 &2144522881
 GameObject:
   m_ObjectHideFlags: 0
@@ -322,8 +325,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2144522884}
   - component: {fileID: 2144522883}
-  - component: {fileID: 2144522882}
   - component: {fileID: 2144522885}
+  - component: {fileID: 2144522886}
   m_Layer: 0
   m_Name: Field
   m_TagString: Untagged
@@ -331,20 +334,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2144522882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2144522881}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5fe746330a67404cbfbab6c9052ee50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _cellPrefab: {fileID: 2169527390332756615, guid: 53fdb00618bad854a9cdf7c452cfc4c3, type: 3}
-  _expandSize: 5
 --- !u!114 &2144522883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,7 +346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9ae9f7d4a151541ae5f69a2b36ae6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _field: {fileID: 2144522882}
+  _field: {fileID: 2144522886}
+  _startSize: 5
 --- !u!4 &2144522884
 Transform:
   m_ObjectHideFlags: 0
@@ -386,6 +376,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mineChance: 0.202
+  _assignCount: 1000
+--- !u!114 &2144522886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144522881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f79fe7c5997ce304fa23646cc7dbee15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cellPrefab: {fileID: 2169527390332756615, guid: 53fdb00618bad854a9cdf7c452cfc4c3, type: 3}
+  _expandSize: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

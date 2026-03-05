@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 [RequireComponent(typeof(MineFiller))]
 public class Field : MonoBehaviour
 {
@@ -12,9 +13,11 @@ public class Field : MonoBehaviour
     private MineFiller _miner;
 
     private static readonly Vector2Int[] Directions =
-{   new Vector2Int(-1, -1),new Vector2Int(0, -1),new Vector2Int(1, -1),
-    new Vector2Int(-1, 0),                      new Vector2Int(1, 0),
-    new Vector2Int(-1, 1),new Vector2Int(0, 1),new Vector2Int(1, 1)};
+    {
+        new(-1, -1), new(0, -1), new(1, -1),
+        new(-1, 0),              new(1, 0),
+        new(-1, 1), new(0, 1),   new(1, 1)
+    };
 
     private void Awake()
     {
@@ -22,18 +25,17 @@ public class Field : MonoBehaviour
         _cells = new Dictionary<Vector2Int, Cell>();
     }
 
-    public void AddCellData(Dictionary<Vector2Int, Cell> cells)
+
+    public void HandleCellClick(Cell cell)
     {
-        foreach (var item in cells)
-        {
-            if (!_cells.ContainsKey(item.Key))
-                _cells.Add(item.Key, item.Value);
-        }
+        Vector2Int position = cell.Position;
+
+        Expand(position, _expandSize);
     }
 
     public void Expand(Vector2Int startPosition, int size)
     {
-        Dictionary<Vector2Int, Cell> newCells = new Dictionary<Vector2Int, Cell>();
+        Dictionary<Vector2Int, Cell> newCells = new();
 
         for (int x = -size; x <= size; x++)
         {
@@ -42,67 +44,65 @@ public class Field : MonoBehaviour
                 Vector2Int position = startPosition + new Vector2Int(x, y);
 
                 if (!_cells.ContainsKey(position))
-                    newCells.Add(position, null);
-            }
-        }
-
-        if (newCells.Count > 0)
-        {
-            AddCellData(newCells);
-        }
-    }
-
-    public List<Cell> InstantiateCells()
-    {
-        List<Cell> newCells = new List<Cell>();
-
-        foreach (var position in new List<Vector2Int>(_cells.Keys))
-        {
-            if (_cells[position] == null)
-            {
-                Cell newCell = Instantiate(_cellPrefab, new Vector3(position.x, position.y, 0), Quaternion.identity, transform);
-                _cells[position] = newCell;
-
-                newCell.OnCellClicked += HandleCellClick;
-
-                newCells.Add(newCell);
-            }
-        }
-
-        _miner.FillMines(newCells);
-
-        SetupNeighbours();
-
-        return newCells;
-    }
-
-    private void SetupNeighbours()
-    {
-        foreach (var pair in _cells)
-        {
-            Vector2Int position = pair.Key;
-            Cell cell = pair.Value;
-
-            List<Cell> neighbours = new List<Cell>();
-
-            foreach (var dir in Directions)
-            {
-                Vector2Int neighbourPos = position + dir;
-
-                if (_cells.TryGetValue(neighbourPos, out Cell neighbour))
                 {
-                    neighbours.Add(neighbour);
+                    Cell newCell = InstantiateCell(position);
+                    _cells.Add(position, newCell);
+                }
+                else
+                {
+                    Cell checkedCell = _cells[position];
+                    if (checkedCell.NeighbourCount < 8)
+                        GetCellNeighbours(checkedCell);
                 }
             }
-
-            cell.SetNeighbours(neighbours);
         }
     }
 
-    private void HandleCellClick(Cell cell)
+    private Cell InstantiateCell(Vector2Int position)
     {
-        Vector2Int cellPosition = new Vector2Int(Mathf.RoundToInt(cell.transform.position.x), Mathf.RoundToInt(cell.transform.position.y));
-        Expand(cellPosition, _expandSize);
-        InstantiateCells();
+        Cell newCell = Instantiate(
+               _cellPrefab,
+               new Vector3(position.x, position.y, 0),
+               Quaternion.identity,
+               transform
+           );
+
+        newCell.Initialize(position, this);
+
+        GetCellNeighbours(newCell);
+
+        _miner.FillMines(newCell);
+
+        newCell.OnCellClicked += HandleCellClick;
+
+        return newCell;
+    }
+
+    private void GetCellNeighbours(Cell cell)
+    {
+        int neighboursCount = 0;
+        int minesAround = 0;
+
+        foreach (var direction in Directions)
+        {
+            if (_cells.TryGetValue(cell.Position + direction, out Cell neighbour) && neighbour != null)
+            {
+                neighboursCount++;
+                if (neighbour.IsMined) minesAround++;
+            }
+        }
+
+        cell.SetNeighboursCount(neighboursCount);
+        cell.SetMinesAroundCount(minesAround);
+    }
+
+    public IEnumerable<Cell> GetNeighbours(Vector2Int position)
+    {
+        foreach (var dir in Directions)
+        {
+            if (_cells.TryGetValue(position + dir, out Cell neighbour))
+                yield return neighbour;
+        }
     }
 }
+

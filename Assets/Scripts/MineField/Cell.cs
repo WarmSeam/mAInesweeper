@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class Cell : MonoBehaviour
 {
-
     public bool IsMined { get; private set; }
 
     public bool IsFlagged { get; private set; }
@@ -14,7 +14,11 @@ public class Cell : MonoBehaviour
 
     public int MinesAroundCount { get; private set; } = 0;
 
-    private List<Cell> _neighbours = new List<Cell>();
+    public Vector2Int Position { get; private set; }
+
+    public int NeighbourCount { get; private set; }
+
+    private Field _field;
 
     public event Action<Cell> OnCellClicked;
     public event Action Exploded;
@@ -28,23 +32,21 @@ public class Cell : MonoBehaviour
         IsFlagged = false;
     }
 
+    public void Initialize(Vector2Int position, Field field)
+    {
+        Position = position;
+        _field = field;
+    }
+
     public void PlaceMine()
     {
         IsMined = true;
     }
 
-    public void SetNeighbours(List<Cell> neighbours)
-    {
-        _neighbours = neighbours;
+    public void SetNeighboursCount(int count) => NeighbourCount = count;
 
-        MinesAroundCount = 0;
+    public void SetMinesAroundCount(int count) => MinesAroundCount = count;
 
-        foreach (Cell cell in _neighbours)
-        {
-            if (cell.IsMined)
-                MinesAroundCount++;
-        }
-    }
 
     public void ToggleFlag()
     {
@@ -84,8 +86,8 @@ public class Cell : MonoBehaviour
             {
                 current.Empted?.Invoke();
 
-                foreach (Cell neighbour in current._neighbours)
-                    if (neighbour.IsClosed && neighbour.IsFlagged == false)
+                foreach (Cell neighbour in _field.GetNeighbours(current.Position))
+                    if (neighbour.IsClosed && neighbour.IsFlagged == false && !neighbour.IsMined)
                         queue.Enqueue(neighbour);
             }
             else
@@ -93,30 +95,18 @@ public class Cell : MonoBehaviour
                 current.Opened?.Invoke(current.MinesAroundCount);
             }
         }
-
     }
 
     public void OpenAround()
     {
-        if (IsClosed || MinesAroundCount == 0)
-            return;
-
-        int flaggedCount = 0;
-
-        foreach (var neighbour in _neighbours)
-            if (neighbour.IsFlagged)
-                flaggedCount++;
+        var neighbours = _field.GetNeighbours(Position).ToList();
+        int flaggedCount = neighbours.Count(n => n.IsFlagged);
 
         if (flaggedCount == MinesAroundCount)
         {
-            foreach (var neighbour in _neighbours)
+            foreach (var neighbour in neighbours)
                 neighbour.Open();
         }
-    }
-
-    public void NotifyClicked()
-    {
-        OnCellClicked?.Invoke(this);
     }
 
     public void Exit()
@@ -124,15 +114,18 @@ public class Cell : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-    Application.Quit();
+        Application.Quit();
 #endif
     }
 
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
 
         Vector3 scale = Vector3.one * 0.9f;
+
         Gizmos.DrawWireCube(transform.position, scale);
     }
+#endif
 }
