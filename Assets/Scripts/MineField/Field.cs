@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +10,9 @@ public class Field : MonoBehaviour
     [SerializeField] private int _expandSize = 3;
 
     private Dictionary<Vector2Int, Cell> _cells;
-
     private MineFiller _miner;
+
+    public event Action CellClicked;
 
     private static readonly Vector2Int[] Directions =
     {
@@ -26,8 +28,12 @@ public class Field : MonoBehaviour
     }
 
 
-    public void HandleCellClick(Cell cell)
+    public void HandleCellOpen(Cell cell)
     {
+        cell.OnCellClicked -= HandleCellOpen;
+
+        CellClicked?.Invoke();
+
         Vector2Int position = cell.Position;
 
         Expand(position, _expandSize);
@@ -35,24 +41,20 @@ public class Field : MonoBehaviour
 
     public void Expand(Vector2Int startPosition, int size)
     {
-        Dictionary<Vector2Int, Cell> newCells = new();
-
         for (int x = -size; x <= size; x++)
         {
             for (int y = -size; y <= size; y++)
             {
-                Vector2Int position = startPosition + new Vector2Int(x, y);
+                Vector2Int position = startPosition + new Vector2Int(y, x);
 
                 if (!_cells.ContainsKey(position))
                 {
-                    Cell newCell = InstantiateCell(position);
-                    _cells.Add(position, newCell);
+                    _cells.Add(position, InstantiateCell(position));
                 }
                 else
                 {
                     Cell checkedCell = _cells[position];
-                    if (checkedCell.NeighbourCount < 8)
-                        GetCellNeighbours(checkedCell);
+                    UpdateNeighbours(checkedCell);
                 }
             }
         }
@@ -67,15 +69,25 @@ public class Field : MonoBehaviour
                transform
            );
 
-        newCell.Initialize(position, this);
 
-        GetCellNeighbours(newCell);
+        newCell.Initialize(position, this);
 
         _miner.FillMines(newCell);
 
-        newCell.OnCellClicked += HandleCellClick;
+        UpdateNeighbours(newCell);
+
+        newCell.OnCellClicked += HandleCellOpen;
 
         return newCell;
+    }
+
+    private void UpdateNeighbours(Cell cell)
+    {
+        GetCellNeighbours(cell);
+
+        foreach (var neighbour in GetNeighbours(cell.Position))
+            GetCellNeighbours(neighbour);
+
     }
 
     private void GetCellNeighbours(Cell cell)
@@ -96,13 +108,17 @@ public class Field : MonoBehaviour
         cell.SetMinesAroundCount(minesAround);
     }
 
-    public IEnumerable<Cell> GetNeighbours(Vector2Int position)
+    public List<Cell> GetNeighbours(Vector2Int position)
     {
+        var neighbours = new List<Cell>();
+
         foreach (var dir in Directions)
         {
-            if (_cells.TryGetValue(position + dir, out Cell neighbour))
-                yield return neighbour;
+            if (_cells.TryGetValue(position + dir, out Cell neighbour) && neighbour != null)
+                neighbours.Add(neighbour);
         }
+
+        return neighbours;
     }
 }
 

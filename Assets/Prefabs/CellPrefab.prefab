@@ -199,8 +199,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -319,10 +319,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cell: {fileID: 2169527390332756615}
   _text: {fileID: 8315498108122205142}
-  _closedImage: {fileID: 21300000, guid: dfdce9beaa34be746b4ccbac29ca6281, type: 3}
-  _emptyImage: {fileID: 21300000, guid: 5de01be7a95ed4a449d679379216969a, type: 3}
-  _bombImage: {fileID: 21300000, guid: 92a83a383de8ec940aff6659d0958aab, type: 3}
-  _flagImage: {fileID: 21300000, guid: 654411db5f0d7fa49930ea042ca9cdc4, type: 3}
+  _closedImage: {fileID: -249838642, guid: b8e3b5a34ee29d447803fa860c92ad49, type: 3}
+  _emptyImage: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
+  _bombImage: {fileID: -1554782463, guid: 3cddf5e0752d1894ab840c3b277da63c, type: 3}
+  _flagImage: {fileID: -1234579201, guid: 3cddf5e0752d1894ab840c3b277da63c, type: 3}
 --- !u!212 &1536244521467051759
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -364,7 +364,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: dfdce9beaa34be746b4ccbac29ca6281, type: 3}
+  m_Sprite: {fileID: -249838642, guid: b8e3b5a34ee29d447803fa860c92ad49, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

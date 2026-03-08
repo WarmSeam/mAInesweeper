@@ -7,15 +7,10 @@ using UnityEngine;
 public class Cell : MonoBehaviour
 {
     public bool IsMined { get; private set; }
-
     public bool IsFlagged { get; private set; }
-
-    public bool IsClosed { get; private set; }
-
-    public int MinesAroundCount { get; private set; } = 0;
-
+    public bool IsOpen { get; private set; }
     public Vector2Int Position { get; private set; }
-
+    public int MinesAroundCount { get; private set; }
     public int NeighbourCount { get; private set; }
 
     private Field _field;
@@ -28,7 +23,7 @@ public class Cell : MonoBehaviour
 
     private void Awake()
     {
-        IsClosed = true;
+        IsOpen = false;
         IsFlagged = false;
     }
 
@@ -36,21 +31,19 @@ public class Cell : MonoBehaviour
     {
         Position = position;
         _field = field;
+
+        IsOpen = false;
+        IsFlagged = false;
+        IsMined = false;
     }
 
-    public void PlaceMine()
-    {
-        IsMined = true;
-    }
-
+    public void PlaceMine() => IsMined = true;
     public void SetNeighboursCount(int count) => NeighbourCount = count;
-
     public void SetMinesAroundCount(int count) => MinesAroundCount = count;
-
 
     public void ToggleFlag()
     {
-        if (IsClosed == false)
+        if (IsOpen)
             return;
 
         IsFlagged = !IsFlagged;
@@ -60,20 +53,22 @@ public class Cell : MonoBehaviour
 
     public void Open()
     {
-        if (IsClosed == false || IsFlagged)
+        if (IsOpen || IsFlagged)
             return;
 
         Queue<Cell> queue = new Queue<Cell>();
+
         queue.Enqueue(this);
 
         while (queue.Count > 0)
         {
             Cell current = queue.Dequeue();
 
-            if (!current.IsClosed)
+            if (current.IsOpen)
                 continue;
 
-            current.IsClosed = false;
+            current.IsOpen = true;
+
             current.OnCellClicked?.Invoke(current);
 
             if (current.IsMined)
@@ -87,8 +82,10 @@ public class Cell : MonoBehaviour
                 current.Empted?.Invoke();
 
                 foreach (Cell neighbour in _field.GetNeighbours(current.Position))
-                    if (neighbour.IsClosed && neighbour.IsFlagged == false && !neighbour.IsMined)
+                    if (!neighbour.IsOpen && !neighbour.IsFlagged && !neighbour.IsMined)
                         queue.Enqueue(neighbour);
+
+                //Destroy(current.gameObject);
             }
             else
             {
