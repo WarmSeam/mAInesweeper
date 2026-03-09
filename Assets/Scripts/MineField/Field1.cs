@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 [RequireComponent(typeof(MineFiller))]
 public class Field : MonoBehaviour
 {
@@ -53,11 +52,18 @@ public class Field : MonoBehaviour
                 }
                 else
                 {
-                    Cell checkedCell = _cells[position];
-                    UpdateNeighbours(checkedCell);
+                    if (_cells[position].NeighbourCount < 8)
+                        UpdateNeighbours(_cells[position]);
                 }
             }
         }
+    }
+
+    public IEnumerable<Cell> GetNeighbours(Vector2Int position)
+    {
+        foreach (var direction in Directions)
+            if (_cells.TryGetValue(position + direction, out Cell neighbour))
+                yield return neighbour;
     }
 
     private Cell InstantiateCell(Vector2Int position)
@@ -71,9 +77,7 @@ public class Field : MonoBehaviour
 
 
         newCell.Initialize(position, this);
-
         _miner.FillMines(newCell);
-
         UpdateNeighbours(newCell);
 
         newCell.OnCellClicked += HandleCellOpen;
@@ -83,21 +87,18 @@ public class Field : MonoBehaviour
 
     private void UpdateNeighbours(Cell cell)
     {
-        GetCellNeighbours(cell);
-
-        foreach (var neighbour in GetNeighbours(cell.Position))
-            GetCellNeighbours(neighbour);
-
+        UpdateCellValues(cell);
+        UpdateNeighboursValues(cell.Position);
     }
 
-    private void GetCellNeighbours(Cell cell)
+    private void UpdateCellValues(Cell cell)
     {
         int neighboursCount = 0;
         int minesAround = 0;
 
         foreach (var direction in Directions)
         {
-            if (_cells.TryGetValue(cell.Position + direction, out Cell neighbour) && neighbour != null)
+            if (_cells.TryGetValue(cell.Position + direction, out Cell neighbour))
             {
                 neighboursCount++;
                 if (neighbour.IsMined) minesAround++;
@@ -108,17 +109,11 @@ public class Field : MonoBehaviour
         cell.SetMinesAroundCount(minesAround);
     }
 
-    public List<Cell> GetNeighbours(Vector2Int position)
+    private void UpdateNeighboursValues(Vector2Int position)
     {
-        var neighbours = new List<Cell>();
-
-        foreach (var dir in Directions)
-        {
-            if (_cells.TryGetValue(position + dir, out Cell neighbour) && neighbour != null)
-                neighbours.Add(neighbour);
-        }
-
-        return neighbours;
+        foreach (var direction in Directions)
+            if (_cells.TryGetValue(position + direction, out Cell neighbour))
+                UpdateCellValues(neighbour);
     }
 }
 

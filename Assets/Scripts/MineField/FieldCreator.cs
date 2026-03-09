@@ -1,10 +1,16 @@
 using UnityEngine;
 
-[RequireComponent(typeof(MineFiller))]
+[RequireComponent(typeof(Field))]
 public class FieldCreator : MonoBehaviour
 {
-    [SerializeField] private Field _field;
     [SerializeField] private int _startSize = 5;
+
+    private Field _field;
+
+    private void Awake()
+    {
+        _field = GetComponent<Field>();
+    }
 
     private void Start()
     {

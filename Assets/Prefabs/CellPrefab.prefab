@@ -29,7 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7538007284635760408}
   m_Father: {fileID: 0}
@@ -78,7 +78,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.014044106}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -89,7 +89,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 1.0280882}
   m_EdgeRadius: 0
 --- !u!1 &5300728983927738799
 GameObject:
@@ -190,7 +190,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -217,8 +217,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 7
-  m_fontSizeBase: 7
+  m_fontSize: 9
+  m_fontSizeBase: 9
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -290,8 +290,8 @@ Transform:
   m_GameObject: {fileID: 7902161365892583488}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.001, y: -0.0021, z: 0}
-  m_LocalScale: {x: 1.4479238, y: 1.4577286, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6374724434880610239}
@@ -319,10 +319,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _cell: {fileID: 2169527390332756615}
   _text: {fileID: 8315498108122205142}
-  _closedImage: {fileID: -249838642, guid: b8e3b5a34ee29d447803fa860c92ad49, type: 3}
-  _emptyImage: {fileID: 10917, guid: 0000000000000000f000000000000000, type: 0}
-  _bombImage: {fileID: -1554782463, guid: 3cddf5e0752d1894ab840c3b277da63c, type: 3}
-  _flagImage: {fileID: -1234579201, guid: 3cddf5e0752d1894ab840c3b277da63c, type: 3}
+  _closedImage: {fileID: -1525057912, guid: ab47f7eba0dd18c44876cc04349c6010, type: 3}
+  _emptyImage: {fileID: 1850142427, guid: ab47f7eba0dd18c44876cc04349c6010, type: 3}
+  _bombImage: {fileID: 183656353, guid: ab47f7eba0dd18c44876cc04349c6010, type: 3}
+  _flagImage: {fileID: -1611023908, guid: ab47f7eba0dd18c44876cc04349c6010, type: 3}
 --- !u!212 &1536244521467051759
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -364,12 +364,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -249838642, guid: b8e3b5a34ee29d447803fa860c92ad49, type: 3}
+  m_Sprite: {fileID: -1525057912, guid: ab47f7eba0dd18c44876cc04349c6010, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.62, y: 0.62}
+  m_Size: {x: 0.70285714, y: 0.6571429}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

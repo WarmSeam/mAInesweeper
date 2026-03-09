@@ -201,8 +201,9 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
-  - component: {fileID: 519420033}
   - component: {fileID: 519420034}
+  - component: {fileID: 519420033}
+  - component: {fileID: 519420035}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -228,7 +229,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.2784314, g: 0.3372549, b: 0.41960788, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -293,11 +294,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a14b286c94f7cbf4895cce844c76dbc1, type: 3}
+  m_Script: {fileID: 11500000, guid: 66b9f99f343bff94c9705f9ea5765eee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 519420031}
-  _cameraDrag: {fileID: 519420034}
+  _zoomSpeed: 3
+  _minZoom: 5
+  _maxZoom: 50
+  _dragThreshold: 0.01
+  _minCameraPos: {x: -50, y: -50}
+  _maxCameraPos: {x: 50, y: 50}
 --- !u!114 &519420034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -307,14 +313,29 @@ MonoBehaviour:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa4eb670949f6684d96f4a850e4deb15, type: 3}
+  m_Script: {fileID: 11500000, guid: d3211415e7a39c64d91176aa89d0be56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 519420031}
-  _dragSpeed: 1
+--- !u!114 &519420035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e78d571665ba09e4197a58aae5f05792, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _camera: {fileID: 0}
   _zoomSpeed: 5
   _minZoom: 5
   _maxZoom: 50
+  _dragThreshold: 0.01
+  _holdTimeForFlag: 0.4
+  _minCameraPos: {x: -50, y: -50}
+  _maxCameraPos: {x: 50, y: 50}
 --- !u!1 &2144522881
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,7 +367,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e9ae9f7d4a151541ae5f69a2b36ae6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _field: {fileID: 2144522886}
   _startSize: 5
 --- !u!4 &2144522884
 Transform:
@@ -386,7 +406,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2144522881}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f79fe7c5997ce304fa23646cc7dbee15, type: 3}
+  m_Script: {fileID: 11500000, guid: d2260c6b3d9f80a488914ad2ba404d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _cellPrefab: {fileID: 2169527390332756615, guid: 53fdb00618bad854a9cdf7c452cfc4c3, type: 3}

@@ -17,6 +17,8 @@ public class CellView : MonoBehaviour
     private void Awake()
     {
         _renderer = GetComponent<SpriteRenderer>();
+        _renderer.sprite = _closedImage;
+
         _text.text = null;
     }
 

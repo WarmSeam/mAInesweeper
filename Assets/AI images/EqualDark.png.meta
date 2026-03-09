@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 70f6d7f0fb43f2344801a30369102aee
+guid: ab47f7eba0dd18c44876cc04349c6010
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -48,7 +48,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 180
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -69,7 +69,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 512
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -82,6 +82,19 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
     buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
@@ -110,13 +123,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_2"
+      name: EqualDark_0
       rect:
         serializedVersion: 2
-        x: 768
-        y: 394
-        width: 270
-        height: 270
+        x: 32
+        y: 22
+        width: 180
+        height: 180
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -124,20 +137,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 521af530badf1e349a96ff9a3742c9d7
-      internalID: -56390372
+      spriteID: 718b454f9f398b2498b6e8eec16da8ba
+      internalID: 1850142427
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_0"
+      name: EqualDark_1
       rect:
         serializedVersion: 2
-        x: 1096
-        y: 400
-        width: 270
-        height: 270
+        x: 231
+        y: 24
+        width: 180
+        height: 180
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -145,20 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e968ac75afff1b4e8bf3d19c9db8f6a
-      internalID: 1220257759
+      spriteID: 34910d84a5ad4d040abc8051d6012d9b
+      internalID: -1525057912
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_1"
+      name: EqualDark_2
       rect:
         serializedVersion: 2
-        x: 451
-        y: 400
-        width: 270
-        height: 270
+        x: 423
+        y: 26
+        width: 180
+        height: 180
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -166,20 +179,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 94fb9eb30c1628c49b59229831b09e72
-      internalID: 1108823995
+      spriteID: 580b075f56944b748a8484b109bf1915
+      internalID: -1611023908
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_3"
+      name: EqualDark_3
       rect:
         serializedVersion: 2
-        x: 131
-        y: 400
-        width: 270
-        height: 270
+        x: 612
+        y: 28
+        width: 180
+        height: 180
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -187,50 +200,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9adb1a472106dc04cbd710a54af752d8
-      internalID: 355688479
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_4"
-      rect:
-        serializedVersion: 2
-        x: 442
-        y: 76
-        width: 270
-        height: 270
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: acde2bf2047c7c74bb131ec8bad5b2c9
-      internalID: 1826797318
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_5"
-      rect:
-        serializedVersion: 2
-        x: 442
-        y: 76
-        width: 270
-        height: 270
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 56ea0cb5e22a7a04c8a13278a0c3157a
-      internalID: 1164523913
+      spriteID: 285703c062f68f34fa6c2f626ef97d35
+      internalID: 183656353
       vertices: []
       indices: 
       edges: []
@@ -246,12 +217,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_0": 1220257759
-      "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_1": 1108823995
-      "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_2": -56390372
-      "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_3": 355688479
-      "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_4": 1826797318
-      "ChatGPT Image 8 \u043C\u0430\u0440. 2026 \u0433., 14_42_58_5": 1164523913
+      EqualDark_0: 1850142427
+      EqualDark_1: -1525057912
+      EqualDark_2: -1611023908
+      EqualDark_3: 183656353
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

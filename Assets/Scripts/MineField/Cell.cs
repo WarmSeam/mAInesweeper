@@ -84,8 +84,6 @@ public class Cell : MonoBehaviour
                 foreach (Cell neighbour in _field.GetNeighbours(current.Position))
                     if (!neighbour.IsOpen && !neighbour.IsFlagged && !neighbour.IsMined)
                         queue.Enqueue(neighbour);
-
-                //Destroy(current.gameObject);
             }
             else
             {
@@ -96,10 +94,10 @@ public class Cell : MonoBehaviour
 
     public void OpenAround()
     {
-        var neighbours = _field.GetNeighbours(Position).ToList();
+        var neighbours = _field.GetNeighbours(Position);
         int flaggedCount = neighbours.Count(n => n.IsFlagged);
 
-        if (flaggedCount == MinesAroundCount)
+        if (flaggedCount == MinesAroundCount && IsOpen)
         {
             foreach (var neighbour in neighbours)
                 neighbour.Open();
