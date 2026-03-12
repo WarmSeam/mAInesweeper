@@ -6,16 +6,19 @@ public class CellView : MonoBehaviour
 {
     [SerializeField] private Cell _cell;
     [SerializeField] private TMP_Text _text;
+    [SerializeField] private CellTheme _theme;
 
-    [SerializeField] private Sprite _closedImage;
-    [SerializeField] private Sprite _emptyImage;
-    [SerializeField] private Sprite _bombImage;
-    [SerializeField] private Sprite _flagImage;
+    private Sprite _closedImage;
+    private Sprite _emptyImage;
+    private Sprite _bombImage;
+    private Sprite _flagImage;
 
     private SpriteRenderer _renderer;
 
     private void Awake()
     {
+        SetSprites();
+
         _renderer = GetComponent<SpriteRenderer>();
         _renderer.sprite = _closedImage;
 
@@ -67,5 +70,13 @@ public class CellView : MonoBehaviour
 
         if (_text != null)
             _text.text = string.Empty;
+    }
+
+    private void SetSprites()
+    {
+        _closedImage = _theme.ClosedImage;
+        _emptyImage = _theme.EmptyImage;
+        _bombImage = _theme.BombImage;
+        _flagImage = _theme.FlagImage;
     }
 }

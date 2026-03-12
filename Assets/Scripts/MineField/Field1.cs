@@ -12,6 +12,7 @@ public class Field : MonoBehaviour
     private MineFiller _miner;
 
     public event Action CellClicked;
+    public event Action Updated;
 
     private static readonly Vector2Int[] Directions =
     {
@@ -32,6 +33,7 @@ public class Field : MonoBehaviour
         cell.OnCellClicked -= HandleCellOpen;
 
         CellClicked?.Invoke();
+        Updated?.Invoke();
 
         Vector2Int position = cell.Position;
 
@@ -64,6 +66,60 @@ public class Field : MonoBehaviour
         foreach (var direction in Directions)
             if (_cells.TryGetValue(position + direction, out Cell neighbour))
                 yield return neighbour;
+    }
+
+    public GameSaveData GetSaveData(int score)
+    {
+        GameSaveData save = new GameSaveData();
+        save.score = score;
+
+        foreach (var cell in _cells.Values)
+        {
+            CellSaveData data = new CellSaveData();
+
+            data.x = cell.Position.x;
+            data.y = cell.Position.y;
+
+            data.isMine = cell.IsMined;
+            data.isOpened = cell.IsOpen;
+            data.minesAround = cell.MinesAroundCount;
+
+            save.cells.Add(data);
+        }
+
+        return save;
+    }
+
+    public void LoadFromSave(GameSaveData save)
+    {
+        foreach (Transform child in transform)
+            Destroy(child.gameObject);
+
+        _cells.Clear();
+
+        foreach (var data in save.cells)
+        {
+            Vector2Int pos = new Vector2Int(data.x, data.y);
+
+            Cell cell = Instantiate(
+                _cellPrefab,
+                new Vector3(pos.x, pos.y),
+                Quaternion.identity,
+                transform
+            );
+
+            cell.Initialize(pos, this);
+
+            cell.SetMine(data.isMine);
+            cell.SetMinesAroundCount(data.minesAround);
+
+            if (data.isOpened)
+                cell.Open();
+
+            _cells.Add(pos, cell);
+        }
+
+        Updated?.Invoke();
     }
 
     private Cell InstantiateCell(Vector2Int position)

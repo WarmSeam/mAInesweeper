@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0743c0a8c7617f44cb4f20413b00195f, type: 3}
+  m_Name: FramedWhite Theme
+  m_EditorClassIdentifier: 
+  _closedImage: {fileID: -666253103, guid: dec3bf13413689d4984df42cd89e6bcc, type: 3}
+  _emptyImage: {fileID: -1888866678, guid: dec3bf13413689d4984df42cd89e6bcc, type: 3}
+  _bombImage: {fileID: -1876107131, guid: 7113c9a6b681b734689080d348aa1e82, type: 3}
+  _flagImage: {fileID: 186579536, guid: 7113c9a6b681b734689080d348aa1e82, type: 3}

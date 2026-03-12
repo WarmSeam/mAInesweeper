@@ -37,10 +37,13 @@ public class Cell : MonoBehaviour
         IsMined = false;
     }
 
-    public void PlaceMine() => IsMined = true;
     public void SetNeighboursCount(int count) => NeighbourCount = count;
     public void SetMinesAroundCount(int count) => MinesAroundCount = count;
 
+    public void SetMine(bool isMined)
+    {
+        IsMined = isMined;
+    }
     public void ToggleFlag()
     {
         if (IsOpen)

@@ -24,7 +24,7 @@ public class MineFiller : MonoBehaviour
         }
 
         if (Random.value < _currentChance)
-            cell.PlaceMine();
+            cell.SetMine(true);
 
         _currentChance += 0.0005f;
 
