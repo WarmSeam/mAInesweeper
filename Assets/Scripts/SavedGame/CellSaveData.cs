@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CellSaveData : MonoBehaviour
+[System.Serializable]
+public class CellSaveData
 {
     public int x;
     public int y;

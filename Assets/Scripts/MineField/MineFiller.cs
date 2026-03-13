@@ -8,6 +8,8 @@ public class MineFiller : MonoBehaviour
     private float _currentChance = 0f;
     private float _currentAssignCount = 0f;
 
+    public float MineChance => _mineChance;
+
     private void Awake()
     {
         _currentAssignCount = _assignCount;
@@ -30,5 +32,10 @@ public class MineFiller : MonoBehaviour
 
         if (_currentChance > _mineChance)
             _currentChance = _mineChance;
+    }
+
+    public void SetLoadChance(float loadedChance)
+    {
+        _mineChance = loadedChance;
     }
 }

@@ -38,6 +38,7 @@ public class Field : MonoBehaviour
         Vector2Int position = cell.Position;
 
         Expand(position, _expandSize);
+
     }
 
     public void Expand(Vector2Int startPosition, int size)
@@ -71,7 +72,8 @@ public class Field : MonoBehaviour
     public GameSaveData GetSaveData(int score)
     {
         GameSaveData save = new GameSaveData();
-        save.score = score;
+        save.Score = score;
+        save.MineChance = _miner.MineChance;
 
         foreach (var cell in _cells.Values)
         {
@@ -84,7 +86,7 @@ public class Field : MonoBehaviour
             data.isOpened = cell.IsOpen;
             data.minesAround = cell.MinesAroundCount;
 
-            save.cells.Add(data);
+            save.CellDatas.Add(data);
         }
 
         return save;
@@ -92,12 +94,12 @@ public class Field : MonoBehaviour
 
     public void LoadFromSave(GameSaveData save)
     {
+        _cells.Clear();
         foreach (Transform child in transform)
             Destroy(child.gameObject);
 
-        _cells.Clear();
 
-        foreach (var data in save.cells)
+        foreach (var data in save.CellDatas)
         {
             Vector2Int pos = new Vector2Int(data.x, data.y);
 
@@ -113,11 +115,15 @@ public class Field : MonoBehaviour
             cell.SetMine(data.isMine);
             cell.SetMinesAroundCount(data.minesAround);
 
+            cell.OnCellClicked += HandleCellOpen;
+
             if (data.isOpened)
                 cell.Open();
 
-            _cells.Add(pos, cell);
+                _cells.Add(pos, cell);
         }
+
+        _miner.SetLoadChance(save.MineChance);
 
         Updated?.Invoke();
     }

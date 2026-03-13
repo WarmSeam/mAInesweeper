@@ -4,6 +4,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private Field _field;
     [SerializeField] private ScoreCounter _score;
+    [SerializeField] private MineFiller _mineFiller;
     [SerializeField] private SaveManager _saveManager;
 
     private void OnEnable()
@@ -30,6 +31,6 @@ public class GameManager : MonoBehaviour
 
         _field.LoadFromSave(save);
 
-        _score.SetStartValue(save.score);
+        _score.SetStartValue(save.Score);
     }
 }

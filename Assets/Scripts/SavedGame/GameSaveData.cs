@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameSaveData : MonoBehaviour
+[System.Serializable]
+public class GameSaveData
 {
-    public int score;
-
-    public List<CellSaveData> cells = new List<CellSaveData>();
+    public int Score;
+    public float MineChance;
+    public List<CellSaveData> CellDatas = new List<CellSaveData>();
 }
