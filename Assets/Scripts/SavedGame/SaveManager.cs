@@ -3,39 +3,34 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-    private string _path;
-
-    private void Awake()
-    {
-        _path = Application.persistentDataPath + "/save.json";
-    }
+    private string Path => System.IO.Path.Combine(Application.persistentDataPath, "save.json");
 
     public void Save(GameSaveData data)
     {
         string json = JsonUtility.ToJson(data, true);
-        File.WriteAllText(_path, json);
+        File.WriteAllText(Path, json);
 
-        Debug.Log("Saved to: " + _path);
+        Debug.Log("Saved to: " + Path);
     }
 
     public GameSaveData Load()
     {
-        if (!File.Exists(_path))
+        if (!File.Exists(Path))
             return null;
 
-        string json = File.ReadAllText(_path);
+        string json = File.ReadAllText(Path);
 
         return JsonUtility.FromJson<GameSaveData>(json);
     }
 
     public bool HasSave()
     {
-        return File.Exists(_path);
+        return File.Exists(Path);
     }
 
     public void DeleteSave()
     {
-        if (File.Exists(_path))
-            File.Delete(_path);
+        if (File.Exists(Path))
+            File.Delete(Path);
     }
 }

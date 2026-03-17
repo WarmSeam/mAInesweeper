@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private Field _field;
+    [SerializeField] private FieldRegulator _field;
     [SerializeField] private ScoreCounter _score;
     [SerializeField] private MineFiller _mineFiller;
     [SerializeField] private SaveManager _saveManager;
 
-    private void OnEnable()
-    {
-        _field.Updated += SaveGame;
-    }
-    private void OnDisable()
-    {
-        _field.Updated -= SaveGame;
-    }
+    //private void OnEnable()
+    //{
+    //    _field.Updated += SaveGame;
+    //}
+    //private void OnDisable()
+    //{
+    //    _field.Updated -= SaveGame;
+    //}
 
     public void SaveGame()
     {

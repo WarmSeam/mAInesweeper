@@ -1,14 +1,18 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MineFiller : MonoBehaviour
 {
     [SerializeField, Range(0f, 1f)] private float _mineChance = 0.15f;
-    [SerializeField] private float _assignCount = 1000f;
+    [SerializeField] private float _assignCount = 150f;
 
     private float _currentChance = 0f;
     private float _currentAssignCount = 0f;
 
     public float MineChance => _mineChance;
+
+    public event Action<float> ChanceChanged;
 
     private void Awake()
     {
@@ -30,6 +34,8 @@ public class MineFiller : MonoBehaviour
 
         _currentChance += 0.0005f;
 
+        ChanceChanged?.Invoke(_mineChance);
+
         if (_currentChance > _mineChance)
             _currentChance = _mineChance;
     }
@@ -37,5 +43,7 @@ public class MineFiller : MonoBehaviour
     public void SetLoadChance(float loadedChance)
     {
         _mineChance = loadedChance;
+
+        ChanceChanged?.Invoke(_mineChance);
     }
 }

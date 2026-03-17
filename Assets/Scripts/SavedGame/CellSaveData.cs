@@ -10,6 +10,7 @@ public class CellSaveData
 
     public bool isMine;
     public bool isOpened;
+    public bool isFlagged;
 
     public int minesAround;
 }

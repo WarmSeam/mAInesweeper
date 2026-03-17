@@ -47,9 +47,11 @@ public class CellView : MonoBehaviour
             _text.text = string.Empty;
     }
 
-    private void OnOpened(int obj)
+    private void OnOpened(int minesCount)
     {
         _renderer.sprite = _emptyImage;
+
+        if(minesCount > 0)
         _text.text = "" + _cell.MinesAroundCount;
     }
 

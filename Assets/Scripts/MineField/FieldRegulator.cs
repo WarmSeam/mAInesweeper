@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MineFiller))]
-public class Field : MonoBehaviour
+public class FieldRegulator : MonoBehaviour
 {
     [SerializeField] private Cell _cellPrefab;
     [SerializeField] private int _expandSize = 3;
@@ -33,7 +33,6 @@ public class Field : MonoBehaviour
         cell.OnCellClicked -= HandleCellOpen;
 
         CellClicked?.Invoke();
-        Updated?.Invoke();
 
         Vector2Int position = cell.Position;
 
@@ -47,7 +46,7 @@ public class Field : MonoBehaviour
         {
             for (int y = -size; y <= size; y++)
             {
-                Vector2Int position = startPosition + new Vector2Int(y, x);
+                Vector2Int position = startPosition + new Vector2Int(x, y);
 
                 if (!_cells.ContainsKey(position))
                 {
@@ -57,9 +56,12 @@ public class Field : MonoBehaviour
                 {
                     if (_cells[position].NeighbourCount < 8)
                         UpdateNeighbours(_cells[position]);
+
                 }
             }
         }
+
+        Updated?.Invoke();
     }
 
     public IEnumerable<Cell> GetNeighbours(Vector2Int position)
@@ -71,20 +73,15 @@ public class Field : MonoBehaviour
 
     public GameSaveData GetSaveData(int score)
     {
-        GameSaveData save = new GameSaveData();
-        save.Score = score;
-        save.MineChance = _miner.MineChance;
+        GameSaveData save = new()
+        {
+            Score = score,
+            MineChance = _miner.MineChance
+        };
 
         foreach (var cell in _cells.Values)
         {
-            CellSaveData data = new CellSaveData();
-
-            data.x = cell.Position.x;
-            data.y = cell.Position.y;
-
-            data.isMine = cell.IsMined;
-            data.isOpened = cell.IsOpen;
-            data.minesAround = cell.MinesAroundCount;
+            CellSaveData data = cell.GetData();
 
             save.CellDatas.Add(data);
         }
@@ -95,32 +92,35 @@ public class Field : MonoBehaviour
     public void LoadFromSave(GameSaveData save)
     {
         _cells.Clear();
+
+        Debug.Log(_cells.Count);
+
         foreach (Transform child in transform)
             Destroy(child.gameObject);
 
 
         foreach (var data in save.CellDatas)
         {
-            Vector2Int pos = new Vector2Int(data.x, data.y);
+            Vector2Int position = new(data.x, data.y);
 
             Cell cell = Instantiate(
                 _cellPrefab,
-                new Vector3(pos.x, pos.y),
+                new Vector3(position.x, position.y, 0),
                 Quaternion.identity,
                 transform
             );
 
-            cell.Initialize(pos, this);
 
-            cell.SetMine(data.isMine);
-            cell.SetMinesAroundCount(data.minesAround);
+            _cells.Add(position, cell);
+            cell.SetData(data, this);
 
             cell.OnCellClicked += HandleCellOpen;
 
-            if (data.isOpened)
-                cell.Open();
+        }
 
-                _cells.Add(pos, cell);
+        foreach (var cell in _cells.Values)
+        {
+            UpdateNeighbours(cell);
         }
 
         _miner.SetLoadChance(save.MineChance);

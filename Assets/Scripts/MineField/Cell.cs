@@ -13,7 +13,7 @@ public class Cell : MonoBehaviour
     public int MinesAroundCount { get; private set; }
     public int NeighbourCount { get; private set; }
 
-    private Field _field;
+    private FieldRegulator _field;
 
     public event Action<Cell> OnCellClicked;
     public event Action Exploded;
@@ -27,7 +27,7 @@ public class Cell : MonoBehaviour
         IsFlagged = false;
     }
 
-    public void Initialize(Vector2Int position, Field field)
+    public void Initialize(Vector2Int position, FieldRegulator field)
     {
         Position = position;
         _field = field;
@@ -105,6 +105,47 @@ public class Cell : MonoBehaviour
             foreach (var neighbour in neighbours)
                 neighbour.Open();
         }
+    }
+
+    public CellSaveData GetData()
+    {
+        return new()
+        {
+            x = Position.x,
+            y = Position.y,
+
+            isMine = IsMined,
+            isFlagged = IsFlagged,
+            isOpened = IsOpen,
+
+            minesAround = MinesAroundCount
+        };
+    }
+
+    public void SetData(CellSaveData data, FieldRegulator field)
+    {
+        _field = field;
+
+        Position = new(data.x, data.y);
+
+        IsMined = data.isMine;
+        IsFlagged = data.isFlagged;
+        IsOpen = data.isOpened;
+
+        MinesAroundCount = data.minesAround;
+
+        UpdateView();
+    }
+
+    public void UpdateView()
+    {
+        if (IsOpen)
+            Opened?.Invoke(MinesAroundCount);
+
+        if (IsFlagged)
+            Flagged?.Invoke(IsFlagged);
+
+
     }
 
     public void Exit()

@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class ScoreCounter : MonoBehaviour
 {
-    [SerializeField] private Field _field;
+    [SerializeField] private FieldRegulator _field;
 
     public int Score { get; private set; }
 
-    public event Action<int> ScoreChanged;
+    public event Action<int> Changed;
 
     private void OnEnable()
     {
@@ -22,12 +22,13 @@ public class ScoreCounter : MonoBehaviour
     public void SetStartValue(int startScore)
     {
         Score = startScore;
+        Changed?.Invoke(Score);
     }
 
     private void OnCellClicked()
     {
         Score++;
-        ScoreChanged?.Invoke(Score);
+        Changed?.Invoke(Score);
     }
 
 }
