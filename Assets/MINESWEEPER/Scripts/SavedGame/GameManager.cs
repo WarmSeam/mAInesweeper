@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Field _field;
+    [SerializeField] private SaveDataSender _saveDataSender;
     [SerializeField] private ScoreCounter _score;
     [SerializeField] private MineFiller _mineFiller;
     [SerializeField] private SaveManager _saveManager;
@@ -18,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     public void SaveGame()
     {
-        GameSaveData save = _field.GetSaveData(_score.Score);
+        GameSaveData save = _saveDataSender.GetSaveData();
         _saveManager.Save(save);
     }
 
@@ -35,9 +36,7 @@ public class GameManager : MonoBehaviour
         else
         {
             canLoad = true;
-
-            _field.LoadFromSave(save);
-            _score.SetStartValue(save.Score);
+           _saveDataSender.SetLoadData(save);
         }
 
         return canLoad;

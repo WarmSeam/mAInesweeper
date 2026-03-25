@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class ExitButton : MonoBehaviour
 {
     [SerializeField] private string _menuSceneName = "Menu";
-    [SerializeField] private MouseInput _mouseInput;
-    [SerializeField] private TouchInput _touchInput;
 
     private Button _button;
 

@@ -7,6 +7,8 @@ public class ScoreCounter : MonoBehaviour
 
     public int Score { get; private set; }
 
+    public int Record {  get; private set; }
+
     public event Action<int> Changed;
 
     private void OnEnable()

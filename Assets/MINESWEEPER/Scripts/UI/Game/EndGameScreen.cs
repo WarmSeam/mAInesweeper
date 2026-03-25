@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EndGameScreen : MonoBehaviour
@@ -14,8 +12,7 @@ public class EndGameScreen : MonoBehaviour
 
     private void OnEnable()
     {
-        _mouseInput.enabled = false;
-        _touchInput.enabled = false;
+       DisableInput();
     }
 
     private void OnDisable()
@@ -24,6 +21,12 @@ public class EndGameScreen : MonoBehaviour
         _mouseInput.enabled = true; 
 
         if(_touchInput  != null)
+        _touchInput.enabled = false;
+    }
+
+    public void DisableInput()
+    {
+        _mouseInput.enabled = false;
         _touchInput.enabled = false;
     }
 }

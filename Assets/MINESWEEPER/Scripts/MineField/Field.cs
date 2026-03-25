@@ -80,25 +80,21 @@ public class Field : MonoBehaviour
                 yield return neighbour;
     }
 
-    public GameSaveData GetSaveData(int score)
+    public List<CellSaveData> GetCellsData()
     {
-        GameSaveData save = new()
-        {
-            Score = score,
-            MineChance = _miner.MineChance
-        };
+        List<CellSaveData> cells = new List<CellSaveData>();
 
         foreach (var cell in _cells.Values)
         {
             CellSaveData data = cell.GetData();
 
-            save.CellDatas.Add(data);
+            cells.Add(data);
         }
 
-        return save;
+        return cells;
     }
 
-    public void LoadFromSave(GameSaveData save)
+    public void SetLoadedData(GameSaveData save)
     {
         _cells.Clear();
 
@@ -116,7 +112,6 @@ public class Field : MonoBehaviour
                 transform
             );
 
-
             _cells.Add(position, cell);
             cell.SetData(data, this);
 
@@ -125,11 +120,7 @@ public class Field : MonoBehaviour
         }
 
         foreach (var cell in _cells.Values)
-        {
             UpdateNeighbours(cell);
-        }
-
-        _miner.SetLoadChance(save.MineChance);
 
         Updated?.Invoke();
     }

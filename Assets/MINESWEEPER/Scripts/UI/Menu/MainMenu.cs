@@ -4,12 +4,22 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    [Header("SceneManager")]
+    [SerializeField] private string _gameSceneName = "Game";
+    [SerializeField] private SaveManager _saveManager;
+
+    [Header ("Buttons")]
     [SerializeField] private NewGameButton _newGame;
     [SerializeField] private ContinueButton _continue;
+
+    [Header("Windows")]
     [SerializeField] private NewGameWindow _newGameWindow;
 
     private void OnEnable()
     {
+        if (!_saveManager.HasSave())
+            _continue.DisableClick();
+
         _continue.Clicked += OnContinueClicked;
         _newGame.Clicked += OnNewGameClicked;
     }
@@ -27,12 +37,16 @@ public class MainMenu : MonoBehaviour
 
     private void OnContinueClicked()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(_gameSceneName);
     }
 
     private void OnNewGameClicked()
     {
-        _newGameWindow.gameObject.SetActive(true);
+        if (_saveManager.HasSave())
+            _newGameWindow.gameObject.SetActive(true);
+        else
+            SceneManager.LoadScene(_gameSceneName);
+
     }
 
     private void OnOptionsClicked()

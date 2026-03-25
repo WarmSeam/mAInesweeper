@@ -1,22 +1,26 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class ContinueButton : MonoBehaviour
+public class EndGameButton : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _text;
+    [SerializeField] private string _menuSceneName = "Menu";
+    [SerializeField] private SaveManager _saveManager;
 
     private Button _button;
-
-    public event Action Clicked;
 
     private void Awake()
     {
         _button = GetComponent<Button>();
+    }
+
+    private void OnEnable()
+    {
         _button.onClick.AddListener(OnClick);
     }
 
@@ -27,15 +31,7 @@ public class ContinueButton : MonoBehaviour
 
     private void OnClick()
     {
-        Clicked?.Invoke();
-    }
-
-    public void DisableClick()
-    {
-            Color disabledColor = _text.color;
-            disabledColor.a -= 0.5f;
-            _text.color = disabledColor;
-
-            _button.interactable = false;
+        _saveManager.DeleteSave();
+        SceneManager.LoadScene(_menuSceneName);
     }
 }
