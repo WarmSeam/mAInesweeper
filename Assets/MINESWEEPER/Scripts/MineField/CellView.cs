@@ -74,7 +74,7 @@ public class CellView : MonoBehaviour
             _text.text = string.Empty;
     }
 
-    private void SetSprites()
+    public void SetSprites()
     {
         _closedImage = _theme.ClosedImage;
         _emptyImage = _theme.EmptyImage;

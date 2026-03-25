@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 public class MineFiller : MonoBehaviour
 {
     [SerializeField, Range(0f, 1f)] private float _mineChance = 0.15f;
-    [SerializeField] private float _assignCount = 150f;
+    [SerializeField] private float _assignCount = 500f;
 
     private float _currentChance = 0f;
     private float _currentAssignCount = 0f;

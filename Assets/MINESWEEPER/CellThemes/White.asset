@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0743c0a8c7617f44cb4f20413b00195f, type: 3}
-  m_Name: White Cells
+  m_Name: White
   m_EditorClassIdentifier: 
   _closedImage: {fileID: 839627356, guid: 7113c9a6b681b734689080d348aa1e82, type: 3}
   _emptyImage: {fileID: -977232647, guid: 7113c9a6b681b734689080d348aa1e82, type: 3}

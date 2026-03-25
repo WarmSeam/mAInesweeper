@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0743c0a8c7617f44cb4f20413b00195f, type: 3}
-  m_Name: FramedWhite Theme
+  m_Name: FramedWhite
   m_EditorClassIdentifier: 
   _closedImage: {fileID: -666253103, guid: dec3bf13413689d4984df42cd89e6bcc, type: 3}
   _emptyImage: {fileID: -1888866678, guid: dec3bf13413689d4984df42cd89e6bcc, type: 3}

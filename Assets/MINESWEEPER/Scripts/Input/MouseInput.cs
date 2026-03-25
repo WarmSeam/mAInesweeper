@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MouseInput : MonoBehaviour
 {
@@ -14,7 +15,6 @@ public class MouseInput : MonoBehaviour
     [SerializeField] private Vector2 _maxCameraPos = new Vector2(50, 50);
 
     private bool _isDragging;
-    private Vector3 _dragStartMousePos;
     private Vector3 _dragStartWorldPos;
 
     private void Update()
@@ -29,8 +29,7 @@ public class MouseInput : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            _dragStartMousePos = Input.mousePosition;
-            _dragStartWorldPos = _camera.ScreenToWorldPoint(_dragStartMousePos);
+            _dragStartWorldPos = _camera.ScreenToWorldPoint(Input.mousePosition);
             _isDragging = false;
         }
 
@@ -45,61 +44,64 @@ public class MouseInput : MonoBehaviour
             if (_isDragging)
             {
                 _camera.transform.position -= deltaWorld;
-
-                Vector3 pos = _camera.transform.position;
-                pos.x = Mathf.Clamp(pos.x, _minCameraPos.x, _maxCameraPos.x);
-                pos.y = Mathf.Clamp(pos.y, _minCameraPos.y, _maxCameraPos.y);
-                _camera.transform.position = pos;
+                ClampCamera();
             }
 
-            _dragStartMousePos = Input.mousePosition;
-            _dragStartWorldPos = _camera.ScreenToWorldPoint(_dragStartMousePos);
+            _dragStartWorldPos = _camera.ScreenToWorldPoint(Input.mousePosition);
         }
     }
 
     private void HandleZoom()
     {
         float scroll = Input.mouseScrollDelta.y;
+
         if (scroll != 0)
         {
             float newSize = _camera.orthographicSize - scroll * _zoomSpeed;
             _camera.orthographicSize = Mathf.Clamp(newSize, _minZoom, _maxZoom);
         }
     }
+
+    private void ClampCamera()
+    {
+        Vector3 pos = _camera.transform.position;
+        pos.x = Mathf.Clamp(pos.x, _minCameraPos.x, _maxCameraPos.x);
+        pos.y = Mathf.Clamp(pos.y, _minCameraPos.y, _maxCameraPos.y);
+        _camera.transform.position = pos;
+    }
     #endregion
 
     #region Cell Input
     private void HandleCellInput()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        Vector3 mousePos = Input.mousePosition;
+        Cell cell = GetCellUnderPointer(mousePos);
+
         if (Input.GetMouseButtonUp(1))
         {
             if (!_isDragging)
-            {
-                Cell cell = GetCellUnderPointer(Input.mousePosition);
                 cell?.ToggleFlag();
-            }
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            Cell cell = GetCellUnderPointer(Input.mousePosition);
             cell?.Open();
         }
 
         if (Input.GetMouseButtonDown(2))
         {
-            Cell cell = GetCellUnderPointer(Input.mousePosition);
             cell?.OpenAround();
         }
     }
 
     private Cell GetCellUnderPointer(Vector3 screenPosition)
     {
-        Vector3 world = _camera.ScreenToWorldPoint(screenPosition);
-        Vector2 point = new Vector2(world.x, world.y);
-        Collider2D hit = Physics2D.OverlapPoint(point);
-        if (hit == null) return null;
-        return hit.GetComponent<Cell>();
+        Vector2 world = _camera.ScreenToWorldPoint(screenPosition);
+        Collider2D hit = Physics2D.OverlapPoint(world);
+        return hit ? hit.GetComponent<Cell>() : null;
     }
     #endregion
 }

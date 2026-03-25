@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -13,7 +14,7 @@ public class Cell : MonoBehaviour
     public int MinesAroundCount { get; private set; }
     public int NeighbourCount { get; private set; }
 
-    private FieldRegulator _field;
+    private Field _field;
 
     public event Action<Cell> OnCellClicked;
     public event Action Exploded;
@@ -27,7 +28,7 @@ public class Cell : MonoBehaviour
         IsFlagged = false;
     }
 
-    public void Initialize(Vector2Int position, FieldRegulator field)
+    public void Initialize(Vector2Int position, Field field)
     {
         Position = position;
         _field = field;
@@ -77,6 +78,7 @@ public class Cell : MonoBehaviour
             if (current.IsMined)
             {
                 current.Exploded?.Invoke();
+                _field.OnBombClicked();
                 continue;
             }
 
@@ -122,7 +124,7 @@ public class Cell : MonoBehaviour
         };
     }
 
-    public void SetData(CellSaveData data, FieldRegulator field)
+    public void SetData(CellSaveData data, Field field)
     {
         _field = field;
 
@@ -145,7 +147,8 @@ public class Cell : MonoBehaviour
         if (IsFlagged)
             Flagged?.Invoke(IsFlagged);
 
-
+        if (IsMined && IsOpen)
+            Exploded?.Invoke();
     }
 
     public void Exit()

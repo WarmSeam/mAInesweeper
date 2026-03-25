@@ -1,19 +1,21 @@
 using UnityEngine;
 
-[RequireComponent(typeof(FieldRegulator))]
+[RequireComponent(typeof(Field))]
 public class FieldCreator : MonoBehaviour
 {
+    [SerializeField] private GameManager _gameManager;
     [SerializeField] private int _startSize = 5;
 
-    private FieldRegulator _field;
+    private Field _field;
 
     private void Awake()
     {
-        _field = GetComponent<FieldRegulator>();
+        _field = GetComponent<Field>();
     }
 
     private void Start()
     {
+        if(!_gameManager.TryLoadGame())
         GenerateStartField(_startSize);
     }
 

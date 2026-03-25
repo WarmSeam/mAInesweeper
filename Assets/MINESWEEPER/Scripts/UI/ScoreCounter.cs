@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ScoreCounter : MonoBehaviour
 {
-    [SerializeField] private FieldRegulator _field;
+    [SerializeField] private Field _field;
 
     public int Score { get; private set; }
 

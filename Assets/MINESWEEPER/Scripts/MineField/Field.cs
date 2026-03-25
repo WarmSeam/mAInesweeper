@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MineFiller))]
-public class FieldRegulator : MonoBehaviour
+public class Field : MonoBehaviour
 {
     [SerializeField] private Cell _cellPrefab;
     [SerializeField] private int _expandSize = 3;
+    [SerializeField] private int _beginSaveCount = 500;
 
     private Dictionary<Vector2Int, Cell> _cells;
     private MineFiller _miner;
 
     public event Action CellClicked;
     public event Action Updated;
+    public event Action BombOpened;
 
     private static readonly Vector2Int[] Directions =
     {
@@ -37,7 +39,6 @@ public class FieldRegulator : MonoBehaviour
         Vector2Int position = cell.Position;
 
         Expand(position, _expandSize);
-
     }
 
     public void Expand(Vector2Int startPosition, int size)
@@ -61,7 +62,15 @@ public class FieldRegulator : MonoBehaviour
             }
         }
 
+        if (_cells.Count < _beginSaveCount)
+            return;
+
         Updated?.Invoke();
+    }
+
+    public void OnBombClicked()
+    {
+        BombOpened?.Invoke();
     }
 
     public IEnumerable<Cell> GetNeighbours(Vector2Int position)
@@ -93,11 +102,8 @@ public class FieldRegulator : MonoBehaviour
     {
         _cells.Clear();
 
-        Debug.Log(_cells.Count);
-
         foreach (Transform child in transform)
             Destroy(child.gameObject);
-
 
         foreach (var data in save.CellDatas)
         {

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class TouchInput : MonoBehaviour
 {
@@ -8,8 +9,8 @@ public class TouchInput : MonoBehaviour
     [SerializeField] private float _maxZoom = 50f;
     [SerializeField] private float _dragThreshold = 0.01f;
     [SerializeField] private float _holdTimeForFlag = 0.4f;
-    [SerializeField] private Vector2 _minCameraPos = new Vector2(-50, -50);
-    [SerializeField] private Vector2 _maxCameraPos = new Vector2(50, 50);
+    [SerializeField] private Vector2 _minCameraPos = new Vector2(-200, -200);
+    [SerializeField] private Vector2 _maxCameraPos = new Vector2(200, 200);
 
     private Vector3 _dragStartWorld;
     private float _holdTimer;
@@ -23,12 +24,26 @@ public class TouchInput : MonoBehaviour
 
     private void Update()
     {
+        // рџљ« Р‘Р»РѕРєРёСЂСѓРµРј Р’РЎРЃ РµСЃР»Рё Р»СЋР±РѕР№ РїР°Р»РµС† РЅР°Рґ UI
+        if (IsAnyTouchOverUI())
+            return;
+
         if (Input.touchCount == 1)
             HandleSingleTouch();
         else if (Input.touchCount == 2)
             HandlePinchDrag();
         else
             ResetTouchStates();
+    }
+
+    private bool IsAnyTouchOverUI()
+    {
+        for (int i = 0; i < Input.touchCount; i++)
+        {
+            if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(i).fingerId))
+                return true;
+        }
+        return false;
     }
 
     private void HandleSingleTouch()
@@ -44,7 +59,8 @@ public class TouchInput : MonoBehaviour
             _flagTriggered = false;
 
             _tapCount++;
-            if (_tapCount == 1) _tapTimer = 0f;
+            if (_tapCount == 1)
+                _tapTimer = 0f;
         }
 
         if (touch.phase == TouchPhase.Moved)
@@ -56,6 +72,7 @@ public class TouchInput : MonoBehaviour
         if (touch.phase == TouchPhase.Stationary && !_flagTriggered)
         {
             _holdTimer += Time.deltaTime;
+
             if (_holdTimer >= _holdTimeForFlag && !_isDragging)
             {
                 Cell cell = GetCellUnderPointer(touch.position);
@@ -68,15 +85,15 @@ public class TouchInput : MonoBehaviour
         {
             if (!_isDragging && !_flagTriggered)
             {
+                Cell cell = GetCellUnderPointer(touch.position);
+
                 if (_tapCount == 2 && _tapTimer <= doubleTapTime)
                 {
-                    Cell cell = GetCellUnderPointer(touch.position);
                     cell?.OpenAround();
                     _tapCount = 0;
                 }
                 else
                 {
-                    Cell cell = GetCellUnderPointer(touch.position);
                     cell?.Open();
                 }
             }
@@ -85,7 +102,9 @@ public class TouchInput : MonoBehaviour
         if (_tapCount == 1)
         {
             _tapTimer += Time.deltaTime;
-            if (_tapTimer > doubleTapTime) _tapCount = 0;
+
+            if (_tapTimer > doubleTapTime)
+                _tapCount = 0;
         }
     }
 
@@ -94,11 +113,18 @@ public class TouchInput : MonoBehaviour
         Touch t0 = Input.GetTouch(0);
         Touch t1 = Input.GetTouch(1);
 
-        // Drag камерой средним движением
+        // Drag РєР°РјРµСЂС‹
         Vector2 delta = (t0.deltaPosition + t1.deltaPosition) / 2f;
-        Vector3 startScreenPos = new Vector3(t0.position.x - delta.x, t0.position.y - delta.y, 0f);
+
+        Vector3 startScreenPos = new Vector3(
+            t0.position.x - delta.x,
+            t0.position.y - delta.y,
+            0f
+        );
+
         Vector3 startWorld = _camera.ScreenToWorldPoint(startScreenPos);
         Vector3 endWorld = _camera.ScreenToWorldPoint(t0.position);
+
         _camera.transform.position -= (endWorld - startWorld);
 
         Vector3 pos = _camera.transform.position;
@@ -110,11 +136,15 @@ public class TouchInput : MonoBehaviour
 
         // Zoom
         float dist = Vector2.Distance(t0.position, t1.position);
+
         if (_lastPinchDist != 0)
         {
             float deltaDist = dist - _lastPinchDist;
-            _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - deltaDist * 0.01f * _zoomSpeed, _minZoom, _maxZoom);
+
+            float newSize = _camera.orthographicSize - deltaDist * 0.01f * _zoomSpeed;
+            _camera.orthographicSize = Mathf.Clamp(newSize, _minZoom, _maxZoom);
         }
+
         _lastPinchDist = dist;
     }
 
@@ -128,6 +158,7 @@ public class TouchInput : MonoBehaviour
     {
         Vector3 world = _camera.ScreenToWorldPoint(screenPosition);
         Vector2 point = new Vector2(world.x, world.y);
+
         Collider2D hit = Physics2D.OverlapPoint(point);
         return hit ? hit.GetComponent<Cell>() : null;
     }

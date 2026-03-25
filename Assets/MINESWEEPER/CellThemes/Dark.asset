@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0743c0a8c7617f44cb4f20413b00195f, type: 3}
-  m_Name: Dark Theme
+  m_Name: Dark
   m_EditorClassIdentifier: 
   _closedImage: {fileID: -1525057912, guid: ab47f7eba0dd18c44876cc04349c6010, type: 3}
   _emptyImage: {fileID: 1850142427, guid: ab47f7eba0dd18c44876cc04349c6010, type: 3}
