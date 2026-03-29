@@ -1,11 +1,11 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OpenBombReactor : MonoBehaviour
 {
     [SerializeField] private Field _field;
-    [SerializeField] private EndGameScreen _endGameScreen;
+    [SerializeField] private ExplodedCellRestorer _cellRestorer;
+    [SerializeField] private EndGameWindow _endGameScreen;
     [SerializeField] private ExitButton _exitButton;
     [SerializeField] private float _delayTime = 1f;
 
@@ -26,10 +26,12 @@ public class OpenBombReactor : MonoBehaviour
         _field.BombOpened -= OnBombOpened;
     }
 
-    private void OnBombOpened()
+    private void OnBombOpened(Cell cell)
     {
-        _endGameScreen.DisableInput();
+        _endGameScreen.HandleEnable();
         _exitButton.gameObject.SetActive(false);
+
+        _cellRestorer.SetCell(cell);
 
         StartCoroutine(OpenEndScreen());
     }

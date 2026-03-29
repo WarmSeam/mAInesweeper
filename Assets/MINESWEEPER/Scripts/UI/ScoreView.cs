@@ -10,24 +10,36 @@ public class ScoreView : MonoBehaviour
     [SerializeField] private MineFiller _mineFiller;
     [SerializeField] private TextMeshProUGUI _text;
 
+    private int _recordValue;
     private int _scoreValue;
     private float _difficultValue;
 
+
     private void OnEnable()
     {
-        _score.Changed += OnScoreChanged;
+        _score.ScoreChanged += OnScoreChanged;
+        _score.RecordChanged += OnRecordChanged;
+
         _mineFiller.ChanceChanged += OnMineChanceChanged;
     }
 
     private void OnDisable()
     {
-        _score.Changed -= OnScoreChanged;
+        _score.ScoreChanged -= OnScoreChanged;
+        _score.RecordChanged -= OnRecordChanged;
+
         _mineFiller.ChanceChanged -= OnMineChanceChanged;
     }
 
     private void OnScoreChanged(int value)
     {
         _scoreValue = value;
+        UpdateView();
+    }
+
+    private void OnRecordChanged(int value)
+    {
+        _recordValue = value;
         UpdateView();
     }
 
@@ -40,6 +52,6 @@ public class ScoreView : MonoBehaviour
 
     private void UpdateView()
     {
-        _text.text = "Очки: " + _scoreValue + "\nСложность: " + _difficultValue;
+        _text.text = "Рекорд: " + _recordValue + "\nОчки: " + _scoreValue + "\nСложность: " + _difficultValue;
     }
 }

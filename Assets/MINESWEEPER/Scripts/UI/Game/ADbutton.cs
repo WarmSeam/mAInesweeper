@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class EndGameButton : MonoBehaviour
+public class ADbutton : MonoBehaviour
 {
-    [SerializeField] private string _menuSceneName = "Menu";
-    [SerializeField] private GameManager _gameManager;
+    [SerializeField] private EndGameWindow _endGameWindow;
+    [SerializeField] private ExitButton _exitButton;
+    [SerializeField] private ExplodedCellRestorer _cellRestorer;
 
     private Button _button;
 
@@ -31,7 +29,8 @@ public class EndGameButton : MonoBehaviour
 
     private void OnClick()
     {
-        _gameManager.ClearSave();
-        SceneManager.LoadScene(_menuSceneName);
+        _endGameWindow.gameObject.SetActive(false);
+        _exitButton.gameObject.SetActive(true);
+        _cellRestorer.RestoreCell();
     }
 }

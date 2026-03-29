@@ -78,7 +78,7 @@ public class Cell : MonoBehaviour
             if (current.IsMined)
             {
                 current.Exploded?.Invoke();
-                _field.OnBombClicked();
+                _field.OnBombClicked(this);
                 continue;
             }
 
@@ -139,16 +139,25 @@ public class Cell : MonoBehaviour
         UpdateView();
     }
 
+    public void SwitchBombStatus()
+    {
+        IsOpen = false;
+        IsFlagged = true;
+
+        UpdateView();
+    }
+
     public void UpdateView()
     {
         if (IsOpen)
             Opened?.Invoke(MinesAroundCount);
 
+        if (IsMined && IsOpen)
+            Exploded?.Invoke();
+
         if (IsFlagged)
             Flagged?.Invoke(IsFlagged);
 
-        if (IsMined && IsOpen)
-            Exploded?.Invoke();
     }
 
     public void Exit()

@@ -9,7 +9,8 @@ public class ScoreCounter : MonoBehaviour
 
     public int Record {  get; private set; }
 
-    public event Action<int> Changed;
+    public event Action<int> ScoreChanged;
+    public event Action<int> RecordChanged;
 
     private void OnEnable()
     {
@@ -21,16 +22,25 @@ public class ScoreCounter : MonoBehaviour
         _field.CellClicked -= OnCellClicked;
     }
 
-    public void SetStartValue(int startScore)
+    public void SetStartValues(int startScore, int recordScore)
     {
-        Score = startScore;
-        Changed?.Invoke(Score);
+        Score = startScore; 
+        Record = recordScore;
+
+        ScoreChanged?.Invoke(Score);
     }
 
     private void OnCellClicked()
     {
         Score++;
-        Changed?.Invoke(Score);
+
+        if (Record < Score)
+        {
+            Record = Score;
+            RecordChanged?.Invoke(Record);
+        }
+
+        ScoreChanged?.Invoke(Score);
     }
 
 }

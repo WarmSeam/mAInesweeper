@@ -14,7 +14,7 @@ public class Field : MonoBehaviour
 
     public event Action CellClicked;
     public event Action Updated;
-    public event Action BombOpened;
+    public event Action<Cell> BombOpened;
 
     private static readonly Vector2Int[] Directions =
     {
@@ -68,9 +68,9 @@ public class Field : MonoBehaviour
         Updated?.Invoke();
     }
 
-    public void OnBombClicked()
+    public void OnBombClicked(Cell cell)
     {
-        BombOpened?.Invoke();
+        BombOpened?.Invoke(cell);
     }
 
     public IEnumerable<Cell> GetNeighbours(Vector2Int position)

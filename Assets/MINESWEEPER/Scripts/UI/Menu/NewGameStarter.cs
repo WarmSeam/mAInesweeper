@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SearchService;
@@ -9,14 +10,14 @@ using UnityEngine.UI;
 public class NewGameStarter : MonoBehaviour
 {
     [SerializeField] private string _sceneName;
-    [SerializeField] private SaveManager _saveManager;
 
     private Button _button;
+
+    public event Action NewGameStarted;
 
     private void Awake()
     {
         _button = GetComponent<Button>();
-       
     }
 
     private void OnEnable()
@@ -31,7 +32,7 @@ public class NewGameStarter : MonoBehaviour
 
     private void OnClick()
     {
-        _saveManager.DeleteSave();
+        NewGameStarted?.Invoke();
         SceneManager.LoadScene(_sceneName);
     }
 }

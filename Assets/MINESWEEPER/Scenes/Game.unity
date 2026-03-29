@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 141821886}
   - component: {fileID: 141821890}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -450,7 +450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 519420031}
-  _zoomSpeed: 3
+  _zoomSpeed: 1
   _minZoom: 5
   _maxZoom: 50
   _dragThreshold: 0.05
@@ -485,11 +485,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 561198982}
-  - component: {fileID: 561198981}
   - component: {fileID: 561198984}
   - component: {fileID: 561198983}
   - component: {fileID: 561198985}
   - component: {fileID: 561198986}
+  - component: {fileID: 561198987}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -497,18 +497,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &561198981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 561198980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04546252cea763a4ca669cab9f0ff05c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &561198982
 Transform:
   m_ObjectHideFlags: 0
@@ -550,8 +538,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _field: {fileID: 2144522888}
   _saveDataSender: {fileID: 561198986}
-  _score: {fileID: 1443436862}
-  _mineFiller: {fileID: 2144522885}
   _saveManager: {fileID: 561198983}
 --- !u!114 &561198985
 MonoBehaviour:
@@ -566,6 +552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _field: {fileID: 2144522888}
+  _cellRestorer: {fileID: 561198987}
   _endGameScreen: {fileID: 1833554709}
   _exitButton: {fileID: 1718845265}
   _delayTime: 4
@@ -584,6 +571,18 @@ MonoBehaviour:
   _field: {fileID: 2144522888}
   _counter: {fileID: 1443436862}
   _mineFiller: {fileID: 2144522885}
+--- !u!114 &561198987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561198980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0101bf02cd049ed4590a3a3f7a811dff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &692402123
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +718,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _menuSceneName: Menu
-  _saveManager: {fileID: 561198983}
+  _gameManager: {fileID: 561198984}
 --- !u!1 &743219680
 GameObject:
   m_ObjectHideFlags: 0
@@ -732,6 +731,7 @@ GameObject:
   - component: {fileID: 743219684}
   - component: {fileID: 743219683}
   - component: {fileID: 743219682}
+  - component: {fileID: 743219685}
   m_Layer: 5
   m_Name: AD Button
   m_TagString: Untagged
@@ -841,6 +841,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 743219680}
   m_CullTransparentMesh: 1
+--- !u!114 &743219685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 743219680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5caa94be464e6964cae80cd0b2f19875, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _endGameWindow: {fileID: 1833554709}
+  _exitButton: {fileID: 1718845265}
+  _cellRestorer: {fileID: 561198987}
 --- !u!1 &907995993
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,8 +1001,9 @@ GameObject:
   - component: {fileID: 961453915}
   - component: {fileID: 961453917}
   - component: {fileID: 961453916}
+  - component: {fileID: 961453918}
   m_Layer: 5
-  m_Name: Score Text
+  m_Name: Result Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1110,6 +1126,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961453914}
   m_CullTransparentMesh: 1
+--- !u!114 &961453918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961453914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63aef1dfd2a2c1b4588603feb4e2098f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scoreCounter: {fileID: 1443436862}
 --- !u!1 &1443436859
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,7 +1151,7 @@ GameObject:
   - component: {fileID: 1443436861}
   - component: {fileID: 1443436862}
   m_Layer: 5
-  m_Name: MineChance
+  m_Name: Scores View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1495,7 +1524,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1833554707}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e86913c83fb07aa499158ac37ad70662, type: 3}
+  m_Script: {fileID: 11500000, guid: da4bd12e2a977fc49977d4fa66cf9ff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _mouseInput: {fileID: 519420033}

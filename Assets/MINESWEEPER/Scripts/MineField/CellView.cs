@@ -38,6 +38,7 @@ public class CellView : MonoBehaviour
         _cell.Empted -= OnEmpted;
         _cell.Opened -= OnOpened;
         _cell.Exploded -= OnExploded;
+        _cell.Flagged -= OnFlagged;
     }
 
     private void OnEmpted()

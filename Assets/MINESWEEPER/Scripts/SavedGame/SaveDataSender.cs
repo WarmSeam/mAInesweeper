@@ -16,10 +16,15 @@ public class SaveDataSender : MonoBehaviour
         };
     }
 
-    public void SetLoadData(GameSaveData loadedSave)
+    public RecordSaveData GetRecord()
+    {
+        return new() { Record = _counter.Record };
+    }
+
+    public void SetLoadData(GameSaveData loadedSave, RecordSaveData loadedRecord)
     {
         _mineFiller.SetLoadChance(loadedSave.MineChance);
-        _counter.SetStartValue(loadedSave.Score);
+        _counter.SetStartValues(loadedSave.Score, loadedRecord.Record);
         _field.SetLoadedData(loadedSave);
     }
 }
