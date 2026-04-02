@@ -22,12 +22,17 @@ public class ScoreCounter : MonoBehaviour
         _field.CellClicked -= OnCellClicked;
     }
 
-    public void SetStartValues(int startScore, int recordScore)
+    public void SetStartValues(int startScore)
     {
         Score = startScore; 
-        Record = recordScore;
 
         ScoreChanged?.Invoke(Score);
+    }
+
+    public void SetRecord(int record)
+    {
+        Record = record;
+        RecordChanged?.Invoke(Record);
     }
 
     private void OnCellClicked()

@@ -21,10 +21,15 @@ public class SaveDataSender : MonoBehaviour
         return new() { Record = _counter.Record };
     }
 
-    public void SetLoadData(GameSaveData loadedSave, RecordSaveData loadedRecord)
+    public void SetLoadData(GameSaveData loadedSave)
     {
         _mineFiller.SetLoadChance(loadedSave.MineChance);
-        _counter.SetStartValues(loadedSave.Score, loadedRecord.Record);
+        _counter.SetStartValues(loadedSave.Score);
         _field.SetLoadedData(loadedSave);
+    }
+
+    public void LoadRecord(RecordSaveData record)
+    {
+        _counter.SetRecord(record.Record);
     }
 }

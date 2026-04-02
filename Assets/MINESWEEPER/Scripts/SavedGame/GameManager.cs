@@ -10,6 +10,12 @@ public class GameManager : MonoBehaviour
     [Header("In Menu")]
     [SerializeField] private NewGameStarter _newGameStarter;
 
+    private void Start()
+    {
+        if (_saveDataSender != null)
+            _saveDataSender.LoadRecord(_saveManager.LoadRecord());
+    }
+
     private void OnEnable()
     {
         if (_field != null)
@@ -50,10 +56,15 @@ public class GameManager : MonoBehaviour
         else
         {
             canLoad = true;
-            _saveDataSender.SetLoadData(save, record);
+            _saveDataSender.SetLoadData(save);
         }
 
         return canLoad;
+    }
+
+    public void LoadRecord()
+    {
+        RecordSaveData record = _saveManager.LoadRecord();
     }
 
     public void ClearSave()
